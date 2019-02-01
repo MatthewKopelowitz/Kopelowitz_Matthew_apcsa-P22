@@ -62,7 +62,7 @@ public class Variables
 		System.out.println("*                               *");
 		System.out.println("*booleanOne = " + boolOne + "              *");
 		System.out.println("*stringOne = " + stringOne + "             *");
-		//System.out.println("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
+		System.out.println("/////////////////////////////////");
 
 
 
