@@ -22,15 +22,30 @@ public class StringEquality
 
 	public void setWords(String one, String two)
 	{
+		wordOne = one;
+		wordTwo = two;
+	
 	}
 
 	public boolean checkEquality( )
 	{
+		if (wordOne.equals(wordTwo)) {
+			
+			return true;
+		}
+		
+		
 		return false;
 	}
 
 	public String toString()
 	{
-		return wordOne + " does not have the same letters as " + wordTwo + "\n";
+		checkEquality();
+		
+		if (checkEquality() == true) {
+			return wordOne + " has the same letters as " + wordTwo + "\n";
+		}
+		
+		return wordOne + " does not have the same letters as " + wordTwo + "\n"; 
 	}
 }
