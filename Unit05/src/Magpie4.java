@@ -21,6 +21,30 @@ public class Magpie4
 		return "Hello, let's talk.";
 	}
 	
+	
+	public String transformIWantStatement(String statement) {
+		
+		if (findKeyword(statement, "I want something") >= 0) {
+			
+			return "Would you really be happy if you had something?";
+			
+		}
+		
+		return "";
+	}
+	
+	public String transformIYouStatement(String statement) {
+		
+		if (findKeyword(statement, "I something you") >= 0) {
+			
+			return "Why do you something me?";
+			
+		}
+		
+		return "";
+	}
+	
+	
 	/**
 	 * Gives a response to a user statement
 	 * 
@@ -36,10 +60,7 @@ public class Magpie4
 			response = "Say something, please.";
 		}
 
-		else if (findKeyword(statement, "no") >= 0)
-		{
-			response = "Why so negative?";
-		}
+		
 		else if (findKeyword(statement, "mother") >= 0
 				|| findKeyword(statement, "father") >= 0
 				|| findKeyword(statement, "sister") >= 0
@@ -53,11 +74,55 @@ public class Magpie4
 		{
 			response = transformIWantToStatement(statement);
 		}
+		
+		else if (findKeyword(statement, "no") >= 0)
+		{
+			response = "Why so negative?";
+		}
+		else if (findKeyword(statement, "dog") >= 0 || findKeyword(statement, "cat") >= 0) {
+			
+			response = "Tell me more about your pets.";
+		}
+		
+		else if (findKeyword(statement, "Mauro") >= 0) {
+			
+			response = "Mauro? Mr. Mauro? He is a great teacher.";
+			
+		}
+		
+		else if (findKeyword(statement, "mom") >= 0) {
+			
+			response = "I am not your mother.";
+		}
+		
+		else if (findKeyword(statement, "dad") >= 0) {
+			
+			response = "I am not your father.";
+		}
+		
+		else if (findKeyword(statement, "god") >= 0) {
+			
+			response = "I am not god.";
+		}
 
+		else if (transformIWantStatement(statement) == "Would you really be happy if you had something?") {
+			
+			return "Would you really be happy if you had something?";
+		}
+		
+		else if (transformIYouStatement(statement) == "Why do you something me?") {
+			
+			return "Why do you something me?";
+			
+		}
+		
+		
 		else
 		{
 			// Look for a two word (you <something> me)
 			// pattern
+			transformIWantStatement(statement);
+			
 			int psn = findKeyword(statement, "you", 0);
 
 			if (psn >= 0

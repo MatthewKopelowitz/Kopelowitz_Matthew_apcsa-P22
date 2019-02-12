@@ -34,10 +34,7 @@ public class Magpie3
 		{
 			response = "Say something, please.";
 		}
-		else if (findKeyword(statement, "no") >= 0)
-		{
-			response = "Why so negative?";
-		}
+		
 		else if (findKeyword(statement, "mother") >= 0
 				|| findKeyword(statement, "father") >= 0
 				|| findKeyword(statement, "sister") >= 0
@@ -45,6 +42,36 @@ public class Magpie3
 		{
 			response = "Tell me more about your family.";
 		}
+		else if (findKeyword(statement, "no") >= 0)
+		{
+			response = "Why so negative?";
+		}
+		else if (findKeyword(statement, "dog") >= 0 || findKeyword(statement, "cat") >= 0) {
+			
+			response = "Tell me more about your pets.";
+		}
+		
+		else if (findKeyword(statement, "Mauro") >= 0) {
+			
+			response = "Mauro? Mr. Mauro? He is a great teacher.";
+			
+		}
+		
+		else if (findKeyword(statement, "mom") >= 0) {
+			
+			response = "I am not your mother.";
+		}
+		
+		else if (findKeyword(statement, "dad") >= 0) {
+			
+			response = "I am not your father.";
+		}
+		
+		else if (findKeyword(statement, "god") >= 0) {
+			
+			response = "I am not god.";
+		}
+		
 		else
 		{
 			response = getRandomResponse();

@@ -23,6 +23,7 @@ public class MagpieRunner4
 		{
 			System.out.println (maggie.getResponse(statement));
 			statement = in.nextLine();
+			
 		}
 	}
 
