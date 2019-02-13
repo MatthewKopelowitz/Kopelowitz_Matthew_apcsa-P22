@@ -22,27 +22,42 @@ public class Magpie4
 	}
 	
 	
-	public String transformIWantStatement(String statement) {
-		
-		if (findKeyword(statement, "I want something") >= 0) {
-			
-			return "Would you really be happy if you had something?";
-			
+	private String transformIWantSomethingStatement(String statement)
+	{
+		//  Remove the final period, if there is one
+		statement = statement.trim();
+		String lastChar = statement.substring(statement
+				.length() - 1);
+		if (lastChar.equals("."))
+		{
+			statement = statement.substring(0, statement
+					.length() - 1);
 		}
-		
-		return "";
+		int psn = findKeyword (statement, "I want", 0);
+		String restOfStatement = statement.substring(psn + 6).trim();
+		return "Would you really be happy if you had " + restOfStatement + "?";
 	}
 	
-	public String transformIYouStatement(String statement) {
-		
-		if (findKeyword(statement, "I something you") >= 0) {
-			
-			return "Why do you something me?";
-			
+	
+	private String transformISomethingYouStatement(String statement)
+	{
+		//  Remove the final period, if there is one
+		statement = statement.trim();
+		String lastChar = statement.substring(statement
+				.length() - 1);
+		if (lastChar.equals("."))
+		{
+			statement = statement.substring(0, statement
+					.length() - 1);
 		}
 		
-		return "";
+		int psnOfI = findKeyword (statement, "I", 0);
+		int psnOfYou = findKeyword (statement, "you", psnOfI + 3);
+		
+		String restOfStatement = statement.substring(psnOfI + 2, psnOfYou).trim();
+		return "Why do you " + restOfStatement + " me?";
 	}
+	
 	
 	
 	/**
@@ -75,6 +90,17 @@ public class Magpie4
 			response = transformIWantToStatement(statement);
 		}
 		
+		else if ((findKeyword(statement, "I", 0) >= 0 ) && ( findKeyword(statement, "you", 0) )>=0)
+		{
+			response = transformISomethingYouStatement(statement);
+		}
+		
+		else if (findKeyword(statement, "I want", 0) >= 0)
+		{
+			response = transformIWantSomethingStatement(statement);
+		}
+		
+		
 		else if (findKeyword(statement, "no") >= 0)
 		{
 			response = "Why so negative?";
@@ -105,23 +131,15 @@ public class Magpie4
 			response = "I am not god.";
 		}
 
-		else if (transformIWantStatement(statement) == "Would you really be happy if you had something?") {
-			
-			return "Would you really be happy if you had something?";
-		}
 		
-		else if (transformIYouStatement(statement) == "Why do you something me?") {
-			
-			return "Why do you something me?";
-			
-		}
+		
 		
 		
 		else
 		{
 			// Look for a two word (you <something> me)
 			// pattern
-			transformIWantStatement(statement);
+			transformIWantToStatement(statement);
 			
 			int psn = findKeyword(statement, "you", 0);
 
