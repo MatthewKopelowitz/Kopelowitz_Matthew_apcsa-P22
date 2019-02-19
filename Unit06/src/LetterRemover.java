@@ -31,19 +31,22 @@ public class LetterRemover
 	public String removeLetters()
 	{
 		
+		String cleaned=sentence;
+		int loc = sentence.indexOf(lookFor);
 		
-		while (sentence.indexOf(lookFor) > -1) {
+		while (loc > -1) {
 			
-			sentence.replace(lookFor, '\u0000');
+			cleaned = cleaned.substring(0, loc) + cleaned.substring(loc+1, cleaned.length());
+			loc = cleaned.indexOf(lookFor);
 		}
 		
-		String cleaned=sentence;
+		
 		
 		return cleaned;
 	}
 
 	public String toString()
 	{
-		return sentence + " - letter to remove " + lookFor + "\n" + removeLetters();
+		return sentence + " - letter to remove " + lookFor + "\n" + removeLetters() + "\n";
 	}
 }
