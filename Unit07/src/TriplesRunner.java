@@ -14,8 +14,7 @@ public class TriplesRunner
 	   Triples test = new Triples();
 	   
 	   test.setNum(input.nextInt());
-	   
-	   //test.findNumbers();
+	  
 	   
 	   out.print(test);
    
