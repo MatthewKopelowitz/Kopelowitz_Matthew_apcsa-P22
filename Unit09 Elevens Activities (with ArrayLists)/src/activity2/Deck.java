@@ -1,4 +1,4 @@
-package activity4;
+package activity2;
 import java.util.List;
 
 import activity3.Card;
@@ -15,7 +15,7 @@ public class Deck {
 	/**
 	 * cards contains all the cards in the deck.
 	 */
-	private Card[] cards;
+	private ArrayList<Card> cards;
 
 	/**
 	 * size is the number of not-yet-dealt cards.
@@ -35,8 +35,7 @@ public class Deck {
 	 */
 	public Deck(String[] ranks, String[] suits, int[] values) {
 		/* *** TO BE IMPLEMENTED IN ACTIVITY 2 *** */
-		Card[] outputList = new Card[ranks.length * suits.length];
-		int deckloc = 0;
+		ArrayList<Card> outputList = new ArrayList<Card>();
 		for (int i = 0; i < ranks.length; i++) {
 			
 			String inputRank = ranks[i];
@@ -46,12 +45,11 @@ public class Deck {
 				
 				String inputSuits = suits[k];
 				
-				outputList[deckloc] = (new Card(inputRank, inputSuits, inputValue));
-				deckloc+=1;
+				outputList.add(new Card(inputRank, inputSuits, inputValue));
 			}
 		}
 		
-		cards = outputList;
+		cards= outputList;
 	}
 
 
@@ -61,7 +59,7 @@ public class Deck {
 	 */
 	public boolean isEmpty() {
 		/* *** TO BE IMPLEMENTED IN ACTIVITY 2 *** */
-		if (cards.length == 0 ) {
+		if (cards.size() == 0 ) {
 			
 			return true;
 		} else {
@@ -77,7 +75,6 @@ public class Deck {
 	 */
 	public int size() {
 		/* *** TO BE IMPLEMENTED IN ACTIVITY 2 *** */
-		size = cards.length;
 		return size;
 	}
 
@@ -87,19 +84,6 @@ public class Deck {
 	 */
 	public void shuffle() {
 		/* *** TO BE IMPLEMENTED IN ACTIVITY 4 *** */
-	
-		
-		for (int i = size()-1; i > 0; i--) {
-			
-			int r = (int)(Math.floor(size() * Math.random()));
-			
-			Card card1Temp = cards[i];
-			Card card2Temp = cards[r];
-			cards[i] = card2Temp;
-			cards[r] = card1Temp;
-			
-		}
-		
 	}
 
 	/**
@@ -109,33 +93,16 @@ public class Deck {
 	 */
 	public Card deal() {
 		/* *** TO BE IMPLEMENTED IN ACTIVITY 2 *** */
-		if (cards.length == 0) {
+		if (cards.size() == 0) {
 			return null;
 		} else {
-			Card[] newCards = new Card[cards.length - 1];
-			Card holder = cards[0];
-			for (int i = 0; i < newCards.length; i++) {
-				
-				newCards[i] = cards[i+1];
-				
-			}
-			cards = newCards;
+			Card holder = cards.get(0);
+			cards.remove(0);
 			return holder;
 			
 		} 
 	}
 
-	public void printCards() {
-		
-		for (int i = 0; i < size(); i++) {
-			
-			System.out.println(cards[i]);
-			
-		}
-		System.out.println();
-	}
-	
-	
 	/**
 	 * Generates and returns a string representation of this deck.
 	 * @return a string representation of this deck.
@@ -145,7 +112,7 @@ public class Deck {
 		String rtn = "size = " + size + "\nUndealt cards: \n";
 
 		for (int k = size - 1; k >= 0; k--) {
-			rtn = rtn + cards[k];
+			rtn = rtn + cards.get(k);
 			if (k != 0) {
 				rtn = rtn + ", ";
 			}
@@ -156,12 +123,12 @@ public class Deck {
 		}
 
 		rtn = rtn + "\nDealt cards: \n";
-		for (int k = cards.length - 1; k >= size; k--) {
-			rtn = rtn + cards[k];
+		for (int k = cards.size() - 1; k >= size; k--) {
+			rtn = rtn + cards.get(k);
 			if (k != size) {
 				rtn = rtn + ", ";
 			}
-			if ((k - cards.length) % 2 == 0) {
+			if ((k - cards.size()) % 2 == 0) {
 				// Insert carriage returns so entire deck is visible on console.
 				rtn = rtn + "\n";
 			}
