@@ -29,7 +29,7 @@ public class WordRunner
 		
 		ArrayList<Word> wordsInOrder = new ArrayList<Word>();
 		int listSize = words.size();
-		for (int i = 0; i <listSize; i++) {
+		for (int i = 0; i < listSize; i++) {
 			Word bigWord = new Word("");
 			int bigIndex = 0;
 			for (int j = 0; j < words.size(); j++) {
