@@ -1,7 +1,4 @@
 package activity9;
-
-//import activity4.Card;
-
 /**
  * Card.java
  *

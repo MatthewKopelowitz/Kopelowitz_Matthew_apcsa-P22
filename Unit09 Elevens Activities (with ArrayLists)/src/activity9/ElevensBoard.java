@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class ElevensBoard extends Board {
 	
-	private Card[] cards;
+	
 	
 	/**
 	 * The size (number of cards) on the board.
@@ -57,11 +57,7 @@ public class ElevensBoard extends Board {
 	@Override
 	public boolean isLegal(List<Integer> selectedCards) {
 		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
-		int count = 0;
-		for (int i = 0; i < selectedCards.size(); i++) {
-			count += selectedCards.get(i);
-		}
-		if (count == 11) {
+		if (containsPairSum11(selectedCards) == true || containsJQK(selectedCards) == true) {
 			return true;
 		}
 		return false;
@@ -79,7 +75,7 @@ public class ElevensBoard extends Board {
 	public boolean anotherPlayIsPossible() {
 		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
 		ArrayList<Integer> indices = new ArrayList<Integer>();
-		for (int i = 0; i < cards.length; i++) {
+		for (int i = 0; i < size(); i++) {
 			indices.add(i);
 		} 
 		if (containsPairSum11(indices) == true || containsJQK(indices) == true) {
@@ -101,7 +97,7 @@ public class ElevensBoard extends Board {
 		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
 		for (int i = 0; i < selectedCards.size(); i++) {
 			for (int j = 0; j < selectedCards.size(); j++) {
-				if (cards[selectedCards.get(j)].pointValue() + cards[selectedCards.get(i)].pointValue() == 11) {
+				if (cardAt(selectedCards.get(j)).pointValue() + cardAt(selectedCards.get(i)).pointValue() == 11) {
 					return true;
 				}
 			}
@@ -121,11 +117,11 @@ public class ElevensBoard extends Board {
 		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
 		int count = 0;
 		for (int i = 0; i < selectedCards.size(); i++) {
-			if (cards[selectedCards.get(i)].rank().equals("jack")) {
+			if (cardAt(selectedCards.get(i)).rank().equals("jack")) {
 				for (int j = 0; j < selectedCards.size(); j++) {
-					if (cards[selectedCards.get(j)].rank().equals("queen")) {
+					if (cardAt(selectedCards.get(j)).rank().equals("queen")) {
 						for (int k = 0; k < selectedCards.size(); k++) {
-							if (cards[selectedCards.get(k)].rank().equals("king")) {
+							if (cardAt(selectedCards.get(k)).rank().equals("king")) {
 								count++;
 							}
 						}
