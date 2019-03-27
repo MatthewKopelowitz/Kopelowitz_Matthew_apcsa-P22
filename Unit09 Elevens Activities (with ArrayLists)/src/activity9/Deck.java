@@ -50,6 +50,7 @@ public class Deck {
 		}
 		
 		cards= outputList;
+		shuffle();
 	}
 
 
@@ -112,6 +113,7 @@ public class Deck {
 		} else {
 			Card holder = cards.get(0);
 			cards.remove(0);
+			//cards.add(holder);
 			return holder;
 			
 		} 
