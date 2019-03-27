@@ -1,7 +1,7 @@
 //(c) A+ Computer Science
 //www.apluscompsci.com
 //Name -
-
+import java.util.*;
 public class Grid
 {
    private String[][] grid;
@@ -10,10 +10,18 @@ public class Grid
 	public Grid(int rows, int cols, String[] vals)
 	{
 		grid = new String[rows][cols];
-		
+		ArrayList<Integer> randomNums = new ArrayList<>();
+		int randNum = (int)(Math.random() * vals.length);
+		randomNums.add(randNum);
 		for (int r = 0; r < rows; r++) {
 			for (int c = 0; c < cols; c++) {
-				grid[r][c] = vals[(int)Math.random() * vals.length];
+				for (int num : randomNums) {
+					while (randNum == num) {
+						randNum = (int)(Math.random() * vals.length);
+					}
+				}
+				grid[r][c] = vals[randNum];
+				randomNums.add(randNum);
 			}
 		}	
 	}
