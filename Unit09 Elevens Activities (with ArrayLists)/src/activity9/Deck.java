@@ -49,8 +49,10 @@ public class Deck {
 			}
 		}
 		
-		cards= outputList;
+		cards = outputList;
+		size = cards.size();
 		shuffle();
+		
 	}
 
 
@@ -76,7 +78,7 @@ public class Deck {
 	 */
 	public int size() {
 		/* *** TO BE IMPLEMENTED IN ACTIVITY 2 *** */
-		size = cards.size();
+		
 		return size;
 	}
 
@@ -88,7 +90,7 @@ public class Deck {
 		/* *** TO BE IMPLEMENTED IN ACTIVITY 4 *** */
 	
 		
-		for (int i = size()-1; i > 0; i--) {
+		for (int i = cards.size()-1; i > 0; i--) {
 			
 			int r = (int)(Math.floor(size() * Math.random()));
 			
@@ -98,7 +100,7 @@ public class Deck {
 			cards.set(r, card1Temp);
 			
 		}
-		
+		size = cards.size();
 	}
 
 	/**
@@ -108,11 +110,12 @@ public class Deck {
 	 */
 	public Card deal() {
 		/* *** TO BE IMPLEMENTED IN ACTIVITY 2 *** */
-		if (cards.size() == 0) {
+		if (size == 0) {
 			return null;
 		} else {
-			Card holder = cards.get(0);
-			cards.remove(0);
+			size--;
+			Card holder = cards.get(size);
+			//cards.remove(0);
 			//cards.add(holder);
 			return holder;
 			
