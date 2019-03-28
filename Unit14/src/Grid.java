@@ -10,24 +10,24 @@ public class Grid
 	public Grid(int rows, int cols, String[] vals)
 	{
 		grid = new String[rows][cols];
-		ArrayList<Integer> randomNums = new ArrayList<>();
+		//ArrayList<Integer> randomNums = new ArrayList<>();
 		int randNum = (int)(Math.random() * vals.length);
-		randomNums.add(randNum);
+		//randomNums.add(randNum);
 		for (int r = 0; r < rows; r++) {
 			for (int c = 0; c < cols; c++) {
-				for (int num : randomNums) {
-					while (randNum == num) {
+				//for (int num : randomNums) {
+					//while (randNum == num) {
 						randNum = (int)(Math.random() * vals.length);
-					}
-				}
+					//}
+				//}
 				grid[r][c] = vals[randNum];
-				randomNums.add(randNum);
+				//randomNums.add(randNum);
 			}
 		}	
 	}
 
 	//find out which of the vals occurs the most
-	public String findMax(String[] vals)
+	public String findMax()
 	{
 		String freq = grid[0][0];
 		for (String[] row : grid) {
@@ -65,6 +65,6 @@ public class Grid
 			}
 			output += "\n";
 		}
-		return output;
+		return output + "\n" + findMax() + " occurs the most.";
 	}
 }
