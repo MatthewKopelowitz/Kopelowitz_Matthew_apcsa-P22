@@ -63,7 +63,7 @@ public class Pong extends Canvas implements KeyListener, Runnable
 
 
 		//see if ball hits left wall or right wall
-		if(!(ball.getX()>=10 && ball.getX()<=780))
+		if(!(ball.getX()>=10 && ball.getX()<=790))
 		{
 			ball.setXSpeed(0);
 			ball.setYSpeed(0);
@@ -71,34 +71,68 @@ public class Pong extends Canvas implements KeyListener, Runnable
 
 		
 		//see if the ball hits the top or bottom wall 
+		if(!(ball.getY()>=10 && ball.getY()<=590))
+		{
+			ball.setYSpeed(0);
+			ball.setYSpeed(0);
+		}
 
 
 
 
 		//see if the ball hits the left paddle
 		
+		if ((ball.getX() <= leftPaddle.getX() + leftPaddle.getWidth() + Math.abs(ball.getXSpeed())) && (ball.getY() >= leftPaddle.getY() && ball.getY() <= leftPaddle.getY() + leftPaddle.getHeight() || ball.getY() + ball.getHeight() >= leftPaddle.getY() && ball.getY() + ball.getHeight() < leftPaddle.getY() + leftPaddle.getHeight())) {
+			
+			if (ball.getX() <= leftPaddle.getX() + leftPaddle.getWidth() - Math.abs(ball.getXSpeed())) {
+				ball.setYSpeed(ball.getYSpeed() * -1);
+			} else {
+				ball.setXSpeed(ball.getXSpeed() * -1);
+			}
+		}
 		
-		
+/*		
 		//see if the ball hits the right paddle
+		if ((ball.getX() <= rightPaddle.getX() + rightPaddle.getWidth() + Math.abs(ball.getXSpeed())) && (ball.getY() >= rightPaddle.getY() && ball.getY() <= rightPaddle.getY() + rightPaddle.getHeight() || ball.getY() + ball.getHeight() >= rightPaddle.getY() && ball.getY() + ball.getHeight() < rightPaddle.getY() + rightPaddle.getHeight())) {
+			
+			if (ball.getX() <= rightPaddle.getX() + rightPaddle.getWidth() - Math.abs(ball.getXSpeed())) {
+				ball.setYSpeed(ball.getYSpeed() * -1);
+			} else {
+				ball.setXSpeed(ball.getXSpeed() * -1);
+			}
+		}
 		
-		
-		
+*/		
 
 
 		//see if the paddles need to be moved
+		
+		if(keys[0] == true)
+		{
+			//move left paddle up and draw it on the window
+			leftPaddle.moveUpAndDraw(window);
+		}
+		if(keys[1] == true)
+		{
+			//move left paddle down and draw it on the window
+			leftPaddle.moveDownAndDraw(window);
 
+		}
+		if(keys[2] == true)
+		{
+			rightPaddle.moveUpAndDraw(window);
+		}
+		if(keys[3] == true)
+		{
+			rightPaddle.moveDownAndDraw(window);
+		}
 
-
-
-
-
-
-
-
-
-
-
-
+		graphToBack.setColor(Color.LIGHT_GRAY);
+		graphToBack.fillRect(250, 450, 200, 100);
+		graphToBack.setColor(Color.RED);
+		graphToBack.drawString("asdfsdaf", 260, 500);
+		
+		
 
 
 		
