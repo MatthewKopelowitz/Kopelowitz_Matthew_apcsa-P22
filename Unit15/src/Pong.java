@@ -20,6 +20,8 @@ public class Pong extends Canvas implements KeyListener, Runnable
 	private Paddle rightPaddle;
 	private boolean[] keys;
 	private BufferedImage back;
+	private int lscore;
+	private int rscore;
 
 
 	public Pong()
@@ -29,6 +31,8 @@ public class Pong extends Canvas implements KeyListener, Runnable
 		leftPaddle = new Paddle(20, 200, 10, 40, Color.ORANGE, 2);
 		rightPaddle = new Paddle(760, 200, 10, 40, Color.ORANGE, 2);
 		keys = new boolean[4];
+		lscore = 0;
+		rscore = 0;
 
     
     	setBackground(Color.WHITE);
@@ -60,49 +64,69 @@ public class Pong extends Canvas implements KeyListener, Runnable
 		ball.moveAndDraw(graphToBack);
 		leftPaddle.draw(graphToBack);
 		rightPaddle.draw(graphToBack);
+		graphToBack.setColor(Color.LIGHT_GRAY);
+		graphToBack.fillRect(250, 450, 100, 100);
+		graphToBack.setColor(Color.BLACK);
+		graphToBack.drawString("Player 1: " + Integer.toString(lscore), 260, 500);
+		graphToBack.drawString("Player 2: " + Integer.toString(rscore), 260, 515);
 
 
-		//see if ball hits left wall or right wall
-		if(!(ball.getX()>=10 && ball.getX()<=790))
-		{
-			ball.setXSpeed(0);
-			ball.setYSpeed(0);
+		//Collide left wall or right wall
+		if (didCollideRight()) {
+			ball.setYSpeed(/*ball.getYSpeed()*/0);
+			ball.setXSpeed(/*-ball.getXSpeed()*/0);
+			lscore++;
+			graphToBack.setColor(Color.LIGHT_GRAY);
+			graphToBack.fillRect(250, 450, 100, 100);
+			graphToBack.setColor(Color.BLACK);
+			graphToBack.drawString("Player 1: " + Integer.toString(lscore), 260, 500);
+			graphToBack.drawString("Player 2: " + Integer.toString(rscore), 260, 515);
+			graphToBack.setColor(Color.WHITE);
+			graphToBack.fillRect(ball.getX(), ball.getY(), 10, 10);
+			ball = null;
+			ball = new Ball(350, 250, 10, 10, Color.BLUE, 1, 1);
+
 		}
 
 		
-		//see if the ball hits the top or bottom wall 
-		if(!(ball.getY()>=10 && ball.getY()<=590))
-		{
-			ball.setYSpeed(0);
-			ball.setYSpeed(0);
+		if (didCollideLeft()) {
+			ball.setYSpeed(/*ball.getYSpeed()*/0);
+			ball.setXSpeed(/*-ball.getXSpeed()*/0);
+			rscore++;
+			graphToBack.setColor(Color.LIGHT_GRAY);
+			graphToBack.fillRect(250, 450, 100, 100);
+			graphToBack.setColor(Color.BLACK);
+			graphToBack.drawString("Player 1: " + Integer.toString(lscore), 260, 500);
+			graphToBack.drawString("Player 2: " + Integer.toString(rscore), 260, 515);
+			graphToBack.setColor(Color.WHITE);
+			graphToBack.fillRect(ball.getX(), ball.getY(), 10, 10);
+			ball = null;
+			ball = new Ball(350, 250, 10, 10, Color.BLUE, 1, 1);
+
+
 		}
-
-
-
-
+		
+		//Collide Top or Bottom Wall
+		if (didCollideTop() || didCollideBottom()) {
+			ball.setYSpeed(-ball.getYSpeed());
+		}
+		
+		
 		//see if the ball hits the left paddle
 		
-		if ((ball.getX() <= leftPaddle.getX() + leftPaddle.getWidth() + Math.abs(ball.getXSpeed())) && (ball.getY() >= leftPaddle.getY() && ball.getY() <= leftPaddle.getY() + leftPaddle.getHeight() || ball.getY() + ball.getHeight() >= leftPaddle.getY() && ball.getY() + ball.getHeight() < leftPaddle.getY() + leftPaddle.getHeight())) {
-			
-			if (ball.getX() <= leftPaddle.getX() + leftPaddle.getWidth() - Math.abs(ball.getXSpeed())) {
-				ball.setYSpeed(ball.getYSpeed() * -1);
-			} else {
-				ball.setXSpeed(ball.getXSpeed() * -1);
-			}
+		if (didLCollidePaddle(leftPaddle)) {
+			ball.setYSpeed(-ball.getYSpeed());
+			ball.setXSpeed(-ball.getXSpeed());
 		}
 		
-/*		
 		//see if the ball hits the right paddle
-		if ((ball.getX() <= rightPaddle.getX() + rightPaddle.getWidth() + Math.abs(ball.getXSpeed())) && (ball.getY() >= rightPaddle.getY() && ball.getY() <= rightPaddle.getY() + rightPaddle.getHeight() || ball.getY() + ball.getHeight() >= rightPaddle.getY() && ball.getY() + ball.getHeight() < rightPaddle.getY() + rightPaddle.getHeight())) {
-			
-			if (ball.getX() <= rightPaddle.getX() + rightPaddle.getWidth() - Math.abs(ball.getXSpeed())) {
-				ball.setYSpeed(ball.getYSpeed() * -1);
-			} else {
-				ball.setXSpeed(ball.getXSpeed() * -1);
-			}
+		
+		if (didRCollidePaddle(rightPaddle)) {
+			ball.setYSpeed(-ball.getYSpeed());
+			ball.setXSpeed(-ball.getXSpeed());
 		}
 		
-*/		
+	
 
 
 		//see if the paddles need to be moved
@@ -110,27 +134,24 @@ public class Pong extends Canvas implements KeyListener, Runnable
 		if(keys[0] == true)
 		{
 			//move left paddle up and draw it on the window
-			leftPaddle.moveUpAndDraw(window);
+			leftPaddle.moveUpAndDraw(graphToBack);
 		}
 		if(keys[1] == true)
 		{
 			//move left paddle down and draw it on the window
-			leftPaddle.moveDownAndDraw(window);
+			leftPaddle.moveDownAndDraw(graphToBack);
 
 		}
 		if(keys[2] == true)
 		{
-			rightPaddle.moveUpAndDraw(window);
+			rightPaddle.moveUpAndDraw(graphToBack);
 		}
 		if(keys[3] == true)
 		{
-			rightPaddle.moveDownAndDraw(window);
+			rightPaddle.moveDownAndDraw(graphToBack);
 		}
 
-		graphToBack.setColor(Color.LIGHT_GRAY);
-		graphToBack.fillRect(250, 450, 200, 100);
-		graphToBack.setColor(Color.RED);
-		graphToBack.drawString("asdfsdaf", 260, 500);
+		
 		
 		
 
@@ -175,5 +196,51 @@ public class Pong extends Canvas implements KeyListener, Runnable
       }catch(Exception e)
       {
       }
-  	}	
+  	}
+   
+   //Collision Detection
+   public boolean didCollideLeft() {
+	   if (ball.getX() < 1) {
+		   return true;
+	   }
+	   return false;
+   }
+   
+   public boolean didCollideRight() {
+	   if (ball.getX() > 780) {
+		   return true;
+	   }
+	   return false;
+   }
+   
+   public boolean didCollideTop() {
+	   if (ball.getY() < 1) {
+		   return true;
+	   }
+	   return false;
+   }
+   
+   public boolean didCollideBottom() {
+	   if (ball.getY() > 550) {
+		   return true;
+	   }
+	   return false;
+   }
+   
+   
+   
+   public boolean didLCollidePaddle(Paddle n) {
+	   if (ball.getY() >= n.getY() && ball.getY() <= (n.getY() + n.getHeight()) && ball.getX() <= n.getX() + n.getWidth()) {
+		   return true;
+	   }
+	   return false;
+   }
+   
+   public boolean didRCollidePaddle(Paddle n) {
+	   if (ball.getY() >= n.getY() && ball.getY() <= (n.getY() + n.getHeight()) && ball.getX() >= n.getX() - n.getWidth()) {
+		   return true;
+	   }
+	   return false;
+   }
+   
 }
