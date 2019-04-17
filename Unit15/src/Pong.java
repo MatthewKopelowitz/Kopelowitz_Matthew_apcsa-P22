@@ -65,10 +65,10 @@ public class Pong extends Canvas implements KeyListener, Runnable
 		leftPaddle.draw(graphToBack);
 		rightPaddle.draw(graphToBack);
 		graphToBack.setColor(Color.LIGHT_GRAY);
-		graphToBack.fillRect(250, 450, 100, 100);
+		graphToBack.fillRect(250, 450, 200, 100);
 		graphToBack.setColor(Color.BLACK);
 		graphToBack.drawString("Player 1: " + Integer.toString(lscore), 260, 500);
-		graphToBack.drawString("Player 2: " + Integer.toString(rscore), 260, 515);
+		graphToBack.drawString("Player 2: " + Integer.toString(rscore), 350, 500);
 
 
 		//Collide left wall or right wall
@@ -77,14 +77,14 @@ public class Pong extends Canvas implements KeyListener, Runnable
 			ball.setXSpeed(/*-ball.getXSpeed()*/0);
 			lscore++;
 			graphToBack.setColor(Color.LIGHT_GRAY);
-			graphToBack.fillRect(250, 450, 100, 100);
+			graphToBack.fillRect(250, 450, 200, 100);
 			graphToBack.setColor(Color.BLACK);
 			graphToBack.drawString("Player 1: " + Integer.toString(lscore), 260, 500);
-			graphToBack.drawString("Player 2: " + Integer.toString(rscore), 260, 515);
+			graphToBack.drawString("Player 2: " + Integer.toString(rscore), 350, 500);
 			graphToBack.setColor(Color.WHITE);
 			graphToBack.fillRect(ball.getX(), ball.getY(), 10, 10);
 			ball = null;
-			ball = new Ball(350, 250, 10, 10, Color.BLUE, 1, 1);
+			ball = new Ball(350, 250, 10, 10, Color.BLUE, 2, 1);
 
 		}
 
@@ -94,14 +94,14 @@ public class Pong extends Canvas implements KeyListener, Runnable
 			ball.setXSpeed(/*-ball.getXSpeed()*/0);
 			rscore++;
 			graphToBack.setColor(Color.LIGHT_GRAY);
-			graphToBack.fillRect(250, 450, 100, 100);
+			graphToBack.fillRect(250, 450, 200, 100);
 			graphToBack.setColor(Color.BLACK);
 			graphToBack.drawString("Player 1: " + Integer.toString(lscore), 260, 500);
-			graphToBack.drawString("Player 2: " + Integer.toString(rscore), 260, 515);
+			graphToBack.drawString("Player 2: " + Integer.toString(rscore), 350, 500);
 			graphToBack.setColor(Color.WHITE);
 			graphToBack.fillRect(ball.getX(), ball.getY(), 10, 10);
 			ball = null;
-			ball = new Ball(350, 250, 10, 10, Color.BLUE, 1, 1);
+			ball = new Ball(350, 250, 10, 10, Color.BLUE, 2, 1);
 
 
 		}
