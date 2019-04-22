@@ -84,7 +84,7 @@ public class Pong extends Canvas implements KeyListener, Runnable
 			graphToBack.setColor(Color.WHITE);
 			graphToBack.fillRect(ball.getX(), ball.getY(), 10, 10);
 			ball = null;
-			ball = new Ball(350, 250, 10, 10, Color.BLUE, 2, 1);
+			ball = new Ball(350, 250, 10, 10, Color.BLUE, rand(), rand());
 
 		}
 
@@ -101,7 +101,7 @@ public class Pong extends Canvas implements KeyListener, Runnable
 			graphToBack.setColor(Color.WHITE);
 			graphToBack.fillRect(ball.getX(), ball.getY(), 10, 10);
 			ball = null;
-			ball = new Ball(350, 250, 10, 10, Color.BLUE, 2, 1);
+			ball = new Ball(350, 250, 10, 10, Color.BLUE, rand(), rand());
 
 
 		}
@@ -241,6 +241,15 @@ public class Pong extends Canvas implements KeyListener, Runnable
 		   return true;
 	   }
 	   return false;
+   }
+   
+   public int rand() {
+	   int output = (int)(Math.floor((Math.random()*7) - 3));
+	   if (output >= -1 && output <=1) {
+		   return 2;
+	   } else {
+		   return output;
+	   }
    }
    
 }
