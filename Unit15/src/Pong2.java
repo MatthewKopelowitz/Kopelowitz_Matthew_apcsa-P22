@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 import static java.lang.Character.*;
 import java.awt.image.BufferedImage;
 import java.awt.event.ActionListener;
+import java.util.*;
 
 public class Pong2 extends Canvas implements KeyListener, Runnable
 {
@@ -19,6 +20,7 @@ public class Pong2 extends Canvas implements KeyListener, Runnable
 	private Paddle2 leftPaddle;
 	private boolean[] keys;
 	private BufferedImage back;
+	private ArrayList<Tile> tiles;
 	//private int lscore;
 	//private int rscore;
 
@@ -27,11 +29,39 @@ public class Pong2 extends Canvas implements KeyListener, Runnable
 	{
 		//set up all variables related to the game
 		ball = new Ball(10, 100, 10, 10, Color.BLUE, 2, 1);
-		leftPaddle = new Paddle2(350, 250, 40, 40, Color.ORANGE, 2);
+		leftPaddle = new Paddle2(400, 250, 40, 40, Color.ORANGE, 2);
 		keys = new boolean[4];
 		//lscore = 0;
 		//rscore = 0;
-
+		tiles = new ArrayList<Tile>();
+		
+		//top tiles
+		for (int i = 5; i < 785; i+=85) {
+			for (int j = 5; j < 81; j+=45) {
+				tiles.add(new Tile(i, j, 80, 40, Color.BLUE));
+			}
+		}
+		
+		//bottom tiles
+		for (int i = 5; i < 785; i+=85) {
+			for (int j = 660; j < 740; j+=45) {
+				tiles.add(new Tile(i, j, 80, 40, Color.BLUE));
+			}
+		}
+		
+		//left tiles
+		for (int i = 95; i < 785; i+=85) {
+			for (int j = 680; j < 725; j+=45) {
+				tiles.add(new Tile(i, j, 80, 40, Color.BLUE));
+			}
+		}
+				
+		//right tiles
+		for (int i = 5; i < 785; i+=85) {
+			for (int j = 660; j < 740; j+=45) {
+				tiles.add(new Tile(i, j, 80, 40, Color.BLUE));
+			}
+		}
     
     	setBackground(Color.WHITE);
 		setVisible(true);
@@ -61,6 +91,9 @@ public class Pong2 extends Canvas implements KeyListener, Runnable
 
 		ball.moveAndDraw(graphToBack);
 		leftPaddle.draw(graphToBack);
+		for (Tile tile : tiles) {
+			tile.draw(graphToBack);
+		}
 		//graphToBack.setColor(Color.LIGHT_GRAY);
 		//graphToBack.fillRect(250, 450, 200, 100);
 		//graphToBack.setColor(Color.BLACK);
@@ -103,28 +136,48 @@ public class Pong2 extends Canvas implements KeyListener, Runnable
 
 		//}
 		
-		//Collide Top or Bottom Wall or Left or Right
+		
+		//see if the ball hits the left paddle
+		
+//TOP OR BOTTOM WALL
+		
 		if (didCollideTop() || didCollideBottom()) {
 			ball.setYSpeed(-ball.getYSpeed());
 		}
 		
-		if (didCollideLeft() || didCollideRight()) {
+		//LEFT OR RIGHT WALL
+		
+		if (didCollideRight() || didCollideLeft()) {
 			ball.setXSpeed(-ball.getXSpeed());
 		}
-		//see if the ball hits the left paddle
+
+		//LEFT PADDLE COLLISION
 		
-		if (didLCollidePaddle(leftPaddle)) {
+		if (lCollide(leftPaddle)) {
+			ball.setYSpeed(ball.getYSpeed());
+			ball.setXSpeed(-ball.getXSpeed());
+		}
+		
+		//RIGHT PADDLE COLLISION
+		
+		if (rCollide(leftPaddle)) {
+			ball.setYSpeed(ball.getYSpeed());
+			ball.setXSpeed(-ball.getXSpeed());
+		} 
+		
+		//TOP PADDLE COLLISION
+		
+		if (tCollide(leftPaddle)) {
 			ball.setYSpeed(-ball.getYSpeed());
-			ball.setXSpeed(-ball.getXSpeed());
-		}
+			ball.setXSpeed(ball.getXSpeed());
+		} 
 		
-/*		//see if the ball hits the right paddle
+		//BOTTOM PADDLE COLLISION
 		
-		if (didRCollidePaddle(rightPaddle)) {
+		if (bCollide(leftPaddle)) {
 			ball.setYSpeed(-ball.getYSpeed());
-			ball.setXSpeed(-ball.getXSpeed());
-		}
-*/		
+			ball.setXSpeed(ball.getXSpeed());
+		}		
 	
 
 
@@ -213,7 +266,7 @@ public class Pong2 extends Canvas implements KeyListener, Runnable
    }
    
    public boolean didCollideRight() {
-	   if (ball.getX() > 780) {
+	   if (ball.getX() > 765) {
 		   return true;
 	   }
 	   return false;
@@ -227,7 +280,7 @@ public class Pong2 extends Canvas implements KeyListener, Runnable
    }
    
    public boolean didCollideBottom() {
-	   if (ball.getY() > 550) {
+	   if (ball.getY() > 735) {
 		   return true;
 	   }
 	   return false;
@@ -235,18 +288,33 @@ public class Pong2 extends Canvas implements KeyListener, Runnable
    
    
    
-   public boolean didLCollidePaddle(Paddle2 n) {
-	   if (ball.getY() >= n.getY() && ball.getY() <= (n.getY() + n.getHeight()) && ball.getX() <= n.getX() + n.getWidth()) {
-		   return true;
-	   }
-	   return false;
+   //X AND Y ARE IN TOP LEFT AND DRAWS RIGHT AND DOWN!!!
+   public boolean lCollide(Paddle2 n){
+	   if(ball.getX() + 2*ball.getXSpeed() >= n.getX() && ball.getX() < n.getX() + n.getWidth() /2 && ball.getY() >= n.getY() && ball.getY() <=  n.getY() + n.getHeight())
+			return true;
+	   else
+		   return false;
    }
    
-   public boolean didRCollidePaddle(Paddle2 n) {
-	   if (ball.getY() >= n.getY() && ball.getY() <= (n.getY() + n.getHeight()) && ball.getX() >= n.getX() - n.getWidth()) {
-		   return true;
-	   }
-	   return false;
+   public boolean rCollide (Paddle2 n){
+	   if(ball.getX() + 2*ball.getXSpeed() <= n.getX() + n.getWidth() && ball.getX() >= n.getX() + n.getWidth()/2 && ball.getY() >= n.getY() && ball.getY() <=  n.getY() + n.getHeight())
+			return true;
+	   else
+		   return false;
+   }
+   
+   public boolean tCollide(Paddle2 n){
+	   if(ball.getY() + 2*ball.getYSpeed() >= n.getY() && ball.getY() <= n.getY() + n.getHeight()/2 && ball.getX() >= n.getX() && ball.getX() <=  n.getX() + n.getWidth())
+			return true;
+	   else
+		   return false;
+   }
+   
+   public boolean bCollide(Paddle2 n){
+	   if(ball.getY() + 2*ball.getYSpeed() <= n.getY() + n.getHeight() && ball.getY() >= n.getY() + n.getHeight()/2 && ball.getX() >= n.getX() && ball.getX() <=  n.getX() + n.getWidth())
+			return true;
+	   else
+		   return false;
    }
    
    public int rand() {
