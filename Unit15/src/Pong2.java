@@ -36,29 +36,29 @@ public class Pong2 extends Canvas implements KeyListener, Runnable
 		tiles = new ArrayList<Tile>();
 		
 		//top tiles
-		for (int i = 5; i < 785; i+=85) {
-			for (int j = 5; j < 81; j+=45) {
+		for (int i = 5; i < 750; i+=85) {
+			for (int j = 5; j < 90; j+=45) {
 				tiles.add(new Tile(i, j, 80, 40, Color.BLUE));
 			}
 		}
 		
 		//bottom tiles
-		for (int i = 5; i < 785; i+=85) {
-			for (int j = 660; j < 740; j+=45) {
+		for (int i = 5; i < 750; i+=85) {
+			for (int j = 680; j < 750; j+=45) {
 				tiles.add(new Tile(i, j, 80, 40, Color.BLUE));
 			}
 		}
 		
 		//left tiles
-		for (int i = 95; i < 785; i+=85) {
-			for (int j = 680; j < 725; j+=45) {
+		for (int i = 95; i < 660; i+=45) {
+			for (int j = 5; j < 175; j+=85) {
 				tiles.add(new Tile(i, j, 80, 40, Color.BLUE));
 			}
 		}
 				
 		//right tiles
-		for (int i = 5; i < 785; i+=85) {
-			for (int j = 660; j < 740; j+=45) {
+		for (int i = 95; i < 660; i+=45) {
+			for (int j = 600; j < 750; j+=45) {
 				tiles.add(new Tile(i, j, 80, 40, Color.BLUE));
 			}
 		}
@@ -280,7 +280,7 @@ public class Pong2 extends Canvas implements KeyListener, Runnable
    }
    
    public boolean didCollideBottom() {
-	   if (ball.getY() > 735) {
+	   if (ball.getY() > 790) {
 		   return true;
 	   }
 	   return false;
