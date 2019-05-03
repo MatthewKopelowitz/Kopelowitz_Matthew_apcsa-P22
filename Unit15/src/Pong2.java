@@ -3,6 +3,7 @@
 //Name -
 
 import java.awt.Color;
+import java.awt.*;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Canvas;
@@ -21,19 +22,17 @@ public class Pong2 extends Canvas implements KeyListener, Runnable
 	private boolean[] keys;
 	private BufferedImage back;
 	private ArrayList<Tile> tiles;
-	//private int lscore;
-	//private int rscore;
+	private int level;
 
 
 	public Pong2()
 	{
 		//set up all variables related to the game
-		ball = new Ball(10, 100, 10, 10, Color.BLUE, 2, 1);
-		leftPaddle = new Paddle2(400, 250, 40, 40, Color.ORANGE, 2);
+		ball = new Ball(350, 250, 10, 10, Color.GREEN, 3, 3);
+		leftPaddle = new Paddle2(400, 400, 40, 40, Color.ORANGE, 2);
 		keys = new boolean[4];
-		//lscore = 0;
-		//rscore = 0;
 		tiles = new ArrayList<Tile>();
+		level = 1;
 		
 		//top tiles
 		for (int i = 5; i < 750; i+=85) {
@@ -50,15 +49,15 @@ public class Pong2 extends Canvas implements KeyListener, Runnable
 		}
 		
 		//left tiles
-		for (int i = 95; i < 660; i+=45) {
-			for (int j = 5; j < 175; j+=85) {
+		for (int j = 95; j < 660; j+=45) {
+			for (int i = 5; i < 175; i+=85) {
 				tiles.add(new Tile(i, j, 80, 40, Color.BLUE));
 			}
 		}
 				
 		//right tiles
-		for (int i = 95; i < 660; i+=45) {
-			for (int j = 600; j < 750; j+=45) {
+		for (int j = 95; j < 660; j+=45) {
+			for (int i = 600; i < 750; i+=85) {
 				tiles.add(new Tile(i, j, 80, 40, Color.BLUE));
 			}
 		}
@@ -94,52 +93,64 @@ public class Pong2 extends Canvas implements KeyListener, Runnable
 		for (Tile tile : tiles) {
 			tile.draw(graphToBack);
 		}
-		//graphToBack.setColor(Color.LIGHT_GRAY);
-		//graphToBack.fillRect(250, 450, 200, 100);
-		//graphToBack.setColor(Color.BLACK);
-		//graphToBack.drawString("Player 1: " + Integer.toString(lscore), 260, 500);
-		//graphToBack.drawString("Player 2: " + Integer.toString(rscore), 350, 500);
-
-
-		//Collide left wall or right wall
-		//if (didCollideRight()) {
-			//ball.setYSpeed(/*ball.getYSpeed()*/0);
-			//ball.setXSpeed(/*-ball.getXSpeed()*/0);
-			//lscore++;
-			//graphToBack.setColor(Color.LIGHT_GRAY);
-			//graphToBack.fillRect(250, 450, 200, 100);
-			//graphToBack.setColor(Color.BLACK);
-			//graphToBack.drawString("Player 1: " + Integer.toString(lscore), 260, 500);
-			//graphToBack.drawString("Player 2: " + Integer.toString(rscore), 350, 500);
-			//graphToBack.setColor(Color.WHITE);
-			//graphToBack.fillRect(ball.getX(), ball.getY(), 10, 10);
-			//ball = null;
-			//ball = new Ball(350, 250, 10, 10, Color.BLUE, rand(), rand());
-
-		//}
-
 		
-		//if (didCollideLeft()) {
-			//ball.setYSpeed(/*ball.getYSpeed()*/0);
-			//ball.setXSpeed(/*-ball.getXSpeed()*/0);
-			//rscore++;
-			//graphToBack.setColor(Color.LIGHT_GRAY);
-			//graphToBack.fillRect(250, 450, 200, 100);
-			//graphToBack.setColor(Color.BLACK);
-			//graphToBack.drawString("Player 1: " + Integer.toString(lscore), 260, 500);
-			//graphToBack.drawString("Player 2: " + Integer.toString(rscore), 350, 500);
-			//graphToBack.setColor(Color.WHITE);
-			//graphToBack.fillRect(ball.getX(), ball.getY(), 10, 10);
-			//ball = null;
-			//ball = new Ball(350, 250, 10, 10, Color.BLUE, rand(), rand());
-
-
-		//}
+		graphToBack.setColor(Color.LIGHT_GRAY);
+		graphToBack.setFont(new Font("Helvetica", Font.PLAIN, 50));
+		graphToBack.drawString(Integer.toString(level), 400, 360);
 		
 		
-		//see if the ball hits the left paddle
+		//Change Level
+		if (tiles.size() == 0) {
+			ball.setXSpeed(0);
+			ball.setYSpeed(0);
+			level++;
+			graphToBack.setColor(Color.WHITE);
+			graphToBack.fillRect(400, 290, 75, 75);
+			graphToBack.drawString(Integer.toString(level), 400, 360);
+			graphToBack.setColor(Color.WHITE);
+			
+			//top tiles
+			for (int i = 5; i < 750; i += 85) {
+				for (int j = 5; j < 90; j += 45) {
+					tiles.add(new Tile(i, j, 80, 40, Color.BLUE));
+				}
+			}
+			
+			//bottom tiles
+			for (int i = 5; i < 750; i += 85) {
+				for (int j = 680; j < 750; j += 45) {
+					tiles.add(new Tile(i, j, 80, 40, Color.BLUE));
+				}
+			}
+			
+			//left tiles
+			for (int j = 95; j < 660; j += 45) {
+				for (int i = 5; i < 175; i += 85) {
+					tiles.add(new Tile(i, j, 80, 40, Color.BLUE));
+				}
+			}
+			
+			//right tiles
+			for (int j = 95; j < 660; j += 45) {
+				for (int i = 600; i < 750; i += 85) {
+					tiles.add(new Tile(i, j, 80, 40, Color.BLUE));
+				}
+			}
+			
+			for (Tile tile : tiles) {
+				tile.draw(graphToBack);
+			}
+			
+			graphToBack.setColor(Color.WHITE);
+			graphToBack.fillRect(ball.getX(), ball.getY(), 10, 10);
+			ball = null;
+			ball = new Ball(350, 250, 10, 10, Color.GREEN, 3, 3);
+		}
 		
-//TOP OR BOTTOM WALL
+		
+		
+		
+		//TOP OR BOTTOM WALL
 		
 		if (didCollideTop() || didCollideBottom()) {
 			ball.setYSpeed(-ball.getYSpeed());
@@ -179,7 +190,21 @@ public class Pong2 extends Canvas implements KeyListener, Runnable
 			ball.setXSpeed(ball.getXSpeed());
 		}		
 	
-
+		for (Tile tile : tiles) {
+			if (lCollide(tile) || rCollide(tile)) {
+				tile.draw(graphToBack, Color.WHITE);
+				tiles.remove(tile);
+				ball.setXSpeed(-ball.getXSpeed());
+			}
+		}
+		
+		for (Tile tile : tiles) {
+			if (tCollide(tile) || bCollide(tile)) {
+				tile.draw(graphToBack, Color.WHITE);
+				tiles.remove(tile);
+				ball.setYSpeed(-ball.getYSpeed());
+			}
+		}
 
 		//see if the paddles need to be moved
 		
@@ -209,12 +234,6 @@ public class Pong2 extends Canvas implements KeyListener, Runnable
 
 		}
 		
-
-		
-		
-		
-
-
 		
 		twoDGraph.drawImage(back, null, 0, 0);
 	}
@@ -266,7 +285,7 @@ public class Pong2 extends Canvas implements KeyListener, Runnable
    }
    
    public boolean didCollideRight() {
-	   if (ball.getX() > 765) {
+	   if (ball.getX() > 780) {
 		   return true;
 	   }
 	   return false;
@@ -280,7 +299,7 @@ public class Pong2 extends Canvas implements KeyListener, Runnable
    }
    
    public boolean didCollideBottom() {
-	   if (ball.getY() > 790) {
+	   if (ball.getY() > 780) {
 		   return true;
 	   }
 	   return false;
@@ -289,28 +308,28 @@ public class Pong2 extends Canvas implements KeyListener, Runnable
    
    
    //X AND Y ARE IN TOP LEFT AND DRAWS RIGHT AND DOWN!!!
-   public boolean lCollide(Paddle2 n){
+   public boolean lCollide(Block n){
 	   if(ball.getX() + 2*ball.getXSpeed() >= n.getX() && ball.getX() < n.getX() + n.getWidth() /2 && ball.getY() >= n.getY() && ball.getY() <=  n.getY() + n.getHeight())
 			return true;
 	   else
 		   return false;
    }
    
-   public boolean rCollide (Paddle2 n){
+   public boolean rCollide (Block n){
 	   if(ball.getX() + 2*ball.getXSpeed() <= n.getX() + n.getWidth() && ball.getX() >= n.getX() + n.getWidth()/2 && ball.getY() >= n.getY() && ball.getY() <=  n.getY() + n.getHeight())
 			return true;
 	   else
 		   return false;
    }
    
-   public boolean tCollide(Paddle2 n){
+   public boolean tCollide(Block n){
 	   if(ball.getY() + 2*ball.getYSpeed() >= n.getY() && ball.getY() <= n.getY() + n.getHeight()/2 && ball.getX() >= n.getX() && ball.getX() <=  n.getX() + n.getWidth())
 			return true;
 	   else
 		   return false;
    }
    
-   public boolean bCollide(Paddle2 n){
+   public boolean bCollide(Block n){
 	   if(ball.getY() + 2*ball.getYSpeed() <= n.getY() + n.getHeight() && ball.getY() >= n.getY() + n.getHeight()/2 && ball.getX() >= n.getX() && ball.getX() <=  n.getX() + n.getWidth())
 			return true;
 	   else
