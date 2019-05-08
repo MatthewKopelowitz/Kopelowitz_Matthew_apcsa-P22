@@ -3,6 +3,8 @@
 //Name -
 
 import java.awt.Color;
+import java.awt.*;
+import java.util.*;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Canvas;
@@ -19,12 +21,9 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
 	private Ship ship;
 	private Alien alienOne;
 	private Alien alienTwo;
-
-	/* uncomment once you are ready for this part
-	 *
-   private AlienHorde horde;
+	private AlienHorde horde;
 	private Bullets shots;
-	*/
+	
 
 	private boolean[] keys;
 	private BufferedImage back;
@@ -34,9 +33,12 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
 		setBackground(Color.black);
 
 		keys = new boolean[5];
-
-		//instantiate other instance variables
-		//Ship, Alien
+		
+		ship = new Ship(400, 300, 50, 50, 10);
+		alienOne = new Alien(200, 100, 30, 30, 2);
+		alienTwo = new Alien(300, 100, 30, 30, 2);
+		shots = new Bullets();
+		//horde = new AlienHorde();
 
 		this.addKeyListener(this);
 		new Thread(this).start();
@@ -62,18 +64,63 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
 		//create a graphics reference to the back ground image
 		//we will draw all changes on the background image
 		Graphics graphToBack = back.createGraphics();
-
+		
 		graphToBack.setColor(Color.BLUE);
 		graphToBack.drawString("StarFighter ", 25, 50 );
 		graphToBack.setColor(Color.BLACK);
 		graphToBack.fillRect(0,0,800,600);
-
+		
+		
+		//draw the ship
+		ship.draw(graphToBack);
+		
+		//draw the aliens
+		alienOne.draw(graphToBack);
+		alienTwo.draw(graphToBack);
+		
+		//add ammo
+		shots.add(new Ammo());
+		
+		//draw ammo
+		shots.get(0).setX(ship.getX());
+		shots.get(0).setY(ship.getY());
+		
+		if (shots.get(0).isVisible() == true) {
+			shots.get(0).draw(graphToBack);
+		}
+		
+		//move ship
 		if(keys[0] == true)
 		{
 			ship.move("LEFT");
 		}
-
-		//add code to move Ship, Alien, etc.
+		
+		if(keys[1] == true)
+		{
+			ship.move("RIGHT");
+		}
+		
+		if(keys[2] == true)
+		{
+			ship.move("UP");
+		}
+		
+		if(keys[3] == true)
+		{
+			ship.move("DOWN");
+		}
+		
+		if(keys[4] == true)
+		{
+			shots.get(0).setVisible(true);
+			
+		}
+		
+		while (shots.get(0).getY() > 0 && shots.get(0).isVisible()) {
+			shots.get(0).move("UP");
+		}
+		
+		//add code to move Alien, etc.
 
 
 		//add in collision detection to see if Bullets hit the Aliens and if Bullets hit the Ship
@@ -82,7 +129,7 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
 		twoDGraph.drawImage(back, null, 0, 0);
 	}
 
-
+	
 	public void keyPressed(KeyEvent e)
 	{
 		if (e.getKeyCode() == KeyEvent.VK_LEFT)
@@ -133,10 +180,7 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
 		repaint();
 	}
 
-	public void keyTyped(KeyEvent e)
-	{
-      //no code needed here
-	}
+	public void keyTyped(KeyEvent e){}
 
    public void run()
    {

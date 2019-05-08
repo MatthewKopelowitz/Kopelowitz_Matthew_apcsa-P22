@@ -13,55 +13,85 @@ public class Alien extends MovingThing
 {
 	private int speed;
 	private Image image;
+	private boolean alive;
 
 	public Alien()
 	{
 		this(0,0,30,30,0);
+		alive = true;
 	}
 
 	public Alien(int x, int y)
 	{
-		//add code here
+		this.setX(x);
+		this.setY(y);
+		alive = true;
 	}
 
 	public Alien(int x, int y, int s)
 	{
-		//add code here
+		this.setX(x);
+		this.setY(y);
+		setSpeed(s);
+		alive = true;
 	}
 
 	public Alien(int x, int y, int w, int h, int s)
 	{
 		super(x, y, w,h);
-		speed=s;
+		speed = s;
+		alive = true;
 		try
 		{
-			URL url = getClass().getResource("/images/alien.jpg");
-			image = ImageIO.read(url);
+			//URL url = getClass().getResource("/images/alien.jpg");
+			image = ImageIO.read(new File("H:\\APCS\\Units\\Unit17\\Unit17_Assignments-starfighter\\Alien.JPG"));
 		}
 		catch(Exception e)
 		{
-			//feel free to do something here
+			System.out.print(e);
 		}
 	}
 
 	public void setSpeed(int s)
 	{
-	   //add code
+	   speed = s;
 	}
 
 	public int getSpeed()
 	{
-	   return 0;
+	   return speed;
 	}
-
+	
+	public void setAlive(boolean bool) {
+		alive = bool;
+	}
+	
+	public boolean getAlive() {
+		return alive;
+	}
+	
    public void move(String direction)
 	{
-	   //add code here
+	   if (direction.equals("UP")) {
+			setY(this.getY() - 1);
+		}
+		
+		if (direction.equals("DOWN")) {
+			setY(this.getY() + 1);
+		}
+		
+		if (direction.equals("LEFT")) {
+			setX(this.getX() - 1);
+		}
+		
+		if (direction.equals("RIGHT")) {
+			setX(this.getX() + 1);
+		}
 	}
 
 	public void draw( Graphics window )
 	{
-   	window.drawImage(image,getX(),getY(),getWidth(),getHeight(),null);
+		window.drawImage(image,getX(),getY(),getWidth(),getHeight(),null);
 	}
 
 	public String toString()
