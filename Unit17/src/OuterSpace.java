@@ -23,6 +23,7 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
 	private Alien alienTwo;
 	private AlienHorde horde;
 	private Bullets shots;
+	private boolean bulletExist;
 	
 
 	private boolean[] keys;
@@ -33,7 +34,7 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
 		setBackground(Color.black);
 
 		keys = new boolean[5];
-		
+		bulletExist = false;
 		ship = new Ship(400, 300, 50, 50, 10);
 		alienOne = new Alien(200, 100, 30, 30, 2);
 		alienTwo = new Alien(300, 100, 30, 30, 2);
@@ -78,15 +79,16 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
 		alienOne.draw(graphToBack);
 		alienTwo.draw(graphToBack);
 		
-		//add ammo
-		shots.add(new Ammo());
+		//check if space bar has been pressed
+		if (bulletExist && shots.get(0).isVisible() == true && shots.get(0).getY() > 0) {
+			shots.get(0).move2("UP", graphToBack);
+		}
 		
-		//draw ammo
-		shots.get(0).setX(ship.getX());
-		shots.get(0).setY(ship.getY());
-		
-		if (shots.get(0).isVisible() == true) {
-			shots.get(0).draw(graphToBack);
+		//check if ammo has reached top of screen - set it to invisible and remove it from bullets
+		if (bulletExist && shots.get(0).getY() <= 0) {
+			shots.get(0).setVisible(false);
+			shots.remove(0);
+			bulletExist = false;
 		}
 		
 		//move ship
@@ -110,15 +112,17 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
 			ship.move("DOWN");
 		}
 		
+		//fire bullet
 		if(keys[4] == true)
 		{
+			bulletExist = true;
+			shots.add(new Ammo(ship.getX(), ship.getY()));
 			shots.get(0).setVisible(true);
-			
+			shots.cleanEmUp2();
 		}
 		
-		while (shots.get(0).getY() > 0 && shots.get(0).isVisible()) {
-			shots.get(0).move("UP");
-		}
+		
+		
 		
 		//add code to move Alien, etc.
 

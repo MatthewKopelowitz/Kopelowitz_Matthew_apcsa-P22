@@ -28,7 +28,7 @@ public class Pong2 extends Canvas implements KeyListener, Runnable
 	public Pong2()
 	{
 		//set up all variables related to the game
-		ball = new Ball(350, 250, 10, 10, Color.GREEN, 3, 3);
+		ball = new Ball(350, 250, 10, 10, Color.GREEN, 2, 2);
 		leftPaddle = new Paddle2(400, 400, 40, 40, Color.ORANGE, 2);
 		keys = new boolean[4];
 		tiles = new ArrayList<Tile>();
@@ -144,7 +144,7 @@ public class Pong2 extends Canvas implements KeyListener, Runnable
 			graphToBack.setColor(Color.WHITE);
 			graphToBack.fillRect(ball.getX(), ball.getY(), 10, 10);
 			ball = null;
-			ball = new Ball(350, 250, 10, 10, Color.GREEN, 3, 3);
+			ball = new Ball(350, 250, 10, 10, Color.GREEN, 2, 2);
 		}
 		
 		

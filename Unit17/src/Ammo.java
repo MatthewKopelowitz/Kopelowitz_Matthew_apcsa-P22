@@ -59,11 +59,17 @@ public class Ammo extends MovingThing
 		window.fillRect(this.getX()+20, this.getY(), 10, 10);
 	}
 	
+	public void draw2( Graphics window, Color col )
+	{
+		window.setColor(col);
+		window.fillRect(this.getX()+20, this.getY(), 10, 10);
+	}
 	
-	public void move( String direction )
+	
+	public void move( String direction)
 	{
 		if (direction.equals("UP")) {
-			setY(this.getY() - 1);
+			this.setY(this.getY() - 1);
 		}
 		
 		if (direction.equals("DOWN")) {
@@ -78,7 +84,29 @@ public class Ammo extends MovingThing
 			setX(this.getX() + 1);
 		}
 	}
-
+	
+	public void move2( String direction, Graphics window)
+	{
+		if (direction.equals("UP")) {
+			this.draw2(window, Color.BLACK);
+			this.setY(this.getY() - 3);
+			this.draw2(window, Color.YELLOW);
+			
+		}
+		
+		if (direction.equals("DOWN")) {
+			setY(this.getY() + 1);
+		}
+		
+		if (direction.equals("LEFT")) {
+			setX(this.getX() - 1);
+		}
+		
+		if (direction.equals("RIGHT")) {
+			setX(this.getX() + 1);
+		}
+	}
+	
 	public String toString()
 	{
 		return "";

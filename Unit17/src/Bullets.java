@@ -27,6 +27,14 @@ public class Bullets
 	public Ammo get(int i) {
 		return ammo.get(i);
 	}
+	
+	public void remove(int i) {
+		ammo.remove(i);
+	}
+	
+	public int size() {
+		return ammo.size();
+	}
 
 	//post - draw each Ammo
 	public void drawEmAll( Graphics window )
@@ -49,7 +57,14 @@ public class Bullets
 			b = null;
 		}
 	}
-
+	
+	public void cleanEmUp2()
+	{
+		for (int i = 1; i < ammo.size(); i++) {
+			ammo.remove(i);
+		}
+	}
+	
 	public List<Ammo> getList()
 	{
 		return ammo;
