@@ -19,27 +19,36 @@ import java.util.ArrayList;
 public class OuterSpace extends Canvas implements KeyListener, Runnable
 {
 	private Ship ship;
-	private Alien alienOne;
-	private Alien alienTwo;
 	private AlienHorde horde;
 	private Bullets shots;
 	private boolean bulletExist;
+	private String direction;
+	private final int WIDTH;
+	private final int HEIGHT;
 	
 
 	private boolean[] keys;
 	private BufferedImage back;
 
-	public OuterSpace()
+	public OuterSpace(int width, int height)
 	{
 		setBackground(Color.black);
-
+		
+		WIDTH = width;
+		HEIGHT = height;
 		keys = new boolean[5];
 		bulletExist = false;
-		ship = new Ship(400, 300, 50, 50, 10);
-		alienOne = new Alien(200, 100, 30, 30, 2);
-		alienTwo = new Alien(300, 100, 30, 30, 2);
+		ship = new Ship(WIDTH/2, HEIGHT/2, 50, 50, 10);
 		shots = new Bullets();
-		//horde = new AlienHorde();
+		horde = new AlienHorde();
+		direction = "RIGHT";
+		
+		//create aliens and add to horde
+		for (int i = 5; i < WIDTH; i += 100) {
+			for (int j = 25; j < 126; j += 50) {
+				horde.add(new Alien(i, j, 40, 40, 2));
+			}
+		}
 
 		this.addKeyListener(this);
 		new Thread(this).start();
@@ -69,15 +78,44 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
 		graphToBack.setColor(Color.BLUE);
 		graphToBack.drawString("StarFighter ", 25, 50 );
 		graphToBack.setColor(Color.BLACK);
-		graphToBack.fillRect(0,0,800,600);
+		graphToBack.fillRect(0,0,WIDTH,HEIGHT);
 		
 		
 		//draw the ship
 		ship.draw(graphToBack);
 		
+		//keep ship from going out of bounds
+		if (ship.getX() >= WIDTH - 55) {
+			ship.setX(WIDTH - 55);
+		}
+		if (ship.getX() < -10) {
+			ship.setX(-10);
+		}
+		if (ship.getY() >= HEIGHT - 90) {
+			ship.setY(HEIGHT - 90);
+		}
+		if (ship.getY() < 0) {
+			ship.setY(0);
+		}
+		
 		//draw the aliens
-		alienOne.draw(graphToBack);
-		alienTwo.draw(graphToBack);
+		horde.drawEmAll(graphToBack);
+		
+		//move Alien horde
+		horde.moveEmAll(direction, graphToBack);
+				
+		if (horde.get(horde.size()-1).getX() + horde.get(horde.size()-1).getWidth() >= WIDTH - 15) {
+			direction = "DOWN";
+			horde.moveEmAll(direction, graphToBack);
+			direction = "LEFT";
+		}
+				
+		if (horde.get(0).getX() + horde.get(0).getWidth() <= 30) {
+			direction = "DOWN";
+			horde.moveEmAll(direction, graphToBack);
+			direction = "RIGHT";
+		}
+		
 		
 		//check if space bar has been pressed
 		if (bulletExist && shots.get(0).isVisible() == true && shots.get(0).getY() > 0) {
@@ -121,10 +159,6 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
 			shots.cleanEmUp2();
 		}
 		
-		
-		
-		
-		//add code to move Alien, etc.
 
 
 		//add in collision detection to see if Bullets hit the Aliens and if Bullets hit the Ship

@@ -73,7 +73,8 @@ public class Alien extends MovingThing
    public void move(String direction)
 	{
 	   if (direction.equals("UP")) {
-			setY(this.getY() - 1);
+			
+		   	setY(this.getY() - 1);
 		}
 		
 		if (direction.equals("DOWN")) {
@@ -86,6 +87,40 @@ public class Alien extends MovingThing
 		
 		if (direction.equals("RIGHT")) {
 			setX(this.getX() + 1);
+		}
+	}
+   
+   public void draw2( Graphics window, Color col )
+	{
+		window.setColor(col);
+		window.fillRect(this.getX(), this.getY(), 40, 40);
+	}
+   
+   public void move2( String direction, Graphics window)
+	{
+		if (direction.equals("UP")) {
+			this.draw2(window, Color.BLACK);
+			this.setY(this.getY() - 1);
+			this.draw(window);
+			
+		}
+		
+		if (direction.equals("DOWN")) {
+			this.draw2(window, Color.BLACK);
+			this.setY(this.getY() + 20);
+			this.draw(window);
+		}
+		
+		if (direction.equals("LEFT")) {
+			this.draw2(window, Color.BLACK);
+			this.setX(this.getX() - 1);
+			this.draw(window);
+		}
+		
+		if (direction.equals("RIGHT")) {
+			this.draw2(window, Color.BLACK);
+			this.setX(this.getX() + 1);
+			this.draw(window);
 		}
 	}
 

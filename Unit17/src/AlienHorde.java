@@ -14,14 +14,22 @@ public class AlienHorde
 {
 	private List<Alien> aliens;
 
-	public AlienHorde(int size)
+	public AlienHorde()
 	{
 		aliens = new ArrayList<Alien>();
 	}
-
+	
+	public Alien get(int i) {
+		return aliens.get(i);
+	}
+	
 	public void add(Alien al)
 	{
 		aliens.add(al);
+	}
+	
+	public void remove(int i) {
+		aliens.remove(i);
 	}
 
 	public void drawEmAll( Graphics window )
@@ -31,10 +39,10 @@ public class AlienHorde
 		}
 	}
 
-	public void moveEmAll()
+	public void moveEmAll(String direction, Graphics window)
 	{
 		for (Alien a : aliens) {
-			a.move("DOWN");
+			a.move2(direction, window);
 		}
 	}
 
@@ -45,6 +53,10 @@ public class AlienHorde
 				aliens.remove(a);
 			}
 		}
+	}
+	
+	public int size() {
+		return aliens.size();
 	}
 
 	public String toString()
