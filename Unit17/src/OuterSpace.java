@@ -162,6 +162,28 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
 
 
 		//add in collision detection to see if Bullets hit the Aliens and if Bullets hit the Ship
+		
+	/**	for (Alien a : horde.getAliens()) {
+	*		if (lCollide(a)) {
+	*			a.setAlive(false);
+	*		}
+	*		if (rCollide(a)) {
+	*			a.setAlive(false);
+	*		}
+	*		if (bCollide(a)) {
+	*			a.setAlive(false);
+	*		}
+	*	}
+	*/	
+		horde.removeDeadOnes();
+		
+		
+		
+		//if (bulletExist && shots.get(0).getX() < ) {
+			
+		//}
+		
+		
 
 
 		twoDGraph.drawImage(back, null, 0, 0);
@@ -233,5 +255,34 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
       {
       }
   	}
+   
+   
+   public boolean lCollide(MovingThing n){
+		  if(shots.get(0).getX() + 2*shots.get(0).getSpeed() >= n.getX() && shots.get(0).getX() < n.getX() + n.getWidth() /2 && shots.get(0).getY() >= n.getY() && shots.get(0).getY() <=  n.getY() + n.getHeight())
+			return true;
+		  else
+			  return false;
+	  }
+	   
+	public boolean rCollide (MovingThing n){
+		 if(shots.get(0).getX() + 2*shots.get(0).getSpeed() <= n.getX() + n.getWidth() && shots.get(0).getX() >= n.getX() + n.getWidth()/2 && shots.get(0).getY() >= n.getY() && shots.get(0).getY() <=  n.getY() + n.getHeight())
+				return true;
+		   else
+			   return false;
+	   }
+	
+	public boolean tCollide(MovingThing n){
+		   if(shots.get(0).getY() + 2*shots.get(0).getSpeed() >= n.getY() && shots.get(0).getY() <= n.getY() + n.getHeight()/2 && shots.get(0).getX() >= n.getX() && shots.get(0).getX() <=  n.getX() + n.getWidth())
+				return true;
+		   else
+			   return false;
+	   }
+	   
+	 public boolean bCollide(MovingThing n){
+		   if(shots.get(0).getY() + 2*shots.get(0).getSpeed() <= n.getY() + n.getHeight() && shots.get(0).getY() >= n.getY() + n.getHeight()/2 && shots.get(0).getX() >= n.getX() && shots.get(0).getX() <=  n.getX() + n.getWidth())
+				return true;
+		   else
+			   return false;
+	   }
 }
 

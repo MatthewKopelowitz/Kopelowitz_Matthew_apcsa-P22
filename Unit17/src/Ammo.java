@@ -17,6 +17,7 @@ public class Ammo extends MovingThing
 	{
 		this(0,0,0);
 		visible = false;
+		speed = 1;
 	}
 
 	public Ammo(int x, int y)
@@ -24,6 +25,7 @@ public class Ammo extends MovingThing
 		this.setX(x);
 		this.setY(y);
 		visible = false;
+		speed = 1;
 	}
 
 	public Ammo(int x, int y, int s)

@@ -55,6 +55,10 @@ public class AlienHorde
 		}
 	}
 	
+	public List<Alien> getAliens() {
+		return aliens;
+	}
+	
 	public int size() {
 		return aliens.size();
 	}
