@@ -31,6 +31,12 @@ public class AlienHorde
 	public void remove(int i) {
 		aliens.remove(i);
 	}
+	
+	public void removeAll() {
+		for (Alien a : aliens) {
+				aliens.remove(a);
+		}
+	}
 
 	public void drawEmAll( Graphics window )
 	{

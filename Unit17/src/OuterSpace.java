@@ -25,6 +25,7 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
 	private String direction;
 	private final int WIDTH;
 	private final int HEIGHT;
+	private boolean lost;
 	
 
 	private boolean[] keys;
@@ -39,9 +40,11 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
 		keys = new boolean[5];
 		bulletExist = false;
 		ship = new Ship(WIDTH/2, HEIGHT/2, 50, 50, 10);
+		ship.setSpeed(5);
 		shots = new Bullets();
 		horde = new AlienHorde();
 		direction = "RIGHT";
+		lost = false;
 		
 		//create aliens and add to horde
 		for (int i = 5; i < WIDTH; i += 100) {
@@ -102,20 +105,21 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
 		horde.drawEmAll(graphToBack);
 		
 		//move Alien horde
-		horde.moveEmAll(direction, graphToBack);
-				
-		if (horde.get(horde.size()-1).getX() + horde.get(horde.size()-1).getWidth() >= WIDTH - 15) {
-			direction = "DOWN";
+		if (horde.size() != 0) {
 			horde.moveEmAll(direction, graphToBack);
-			direction = "LEFT";
-		}
 				
-		if (horde.get(0).getX() + horde.get(0).getWidth() <= 30) {
-			direction = "DOWN";
-			horde.moveEmAll(direction, graphToBack);
-			direction = "RIGHT";
+			if (horde.get(horde.size()-1).getX() + horde.get(horde.size()-1).getWidth() >= WIDTH - 15) {
+				direction = "DOWN";
+				horde.moveEmAll(direction, graphToBack);
+				direction = "LEFT";
+			}
+				
+			if (horde.get(0).getX() + horde.get(0).getWidth() <= 30) {
+				direction = "DOWN";
+				horde.moveEmAll(direction, graphToBack);
+				direction = "RIGHT";
+			}
 		}
-		
 		
 		//check if space bar has been pressed
 		if (bulletExist && shots.get(0).isVisible() == true && shots.get(0).getY() > 0) {
@@ -155,28 +159,46 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
 		{
 			bulletExist = true;
 			shots.add(new Ammo(ship.getX(), ship.getY()));
+			shots.get(0).setSpeed(10);
 			shots.get(0).setVisible(true);
 			shots.cleanEmUp2();
 		}
 		
 
 
-		//add in collision detection to see if Bullets hit the Aliens and if Bullets hit the Ship
+		//collision detection
+		if (horde.size() != 0) {
+			for (Alien a : horde.getAliens()) {
+				if (bulletExist && Math.abs( shots.get(0).getX() - a.getX() ) < 15 && Math.abs( shots.get(0).getY() - a.getY() ) < 15) {
+					a.setAlive(false);
+				}
+			
+				if (Math.abs( ship.getX() - a.getX() ) < 15 && Math.abs( ship.getY() - a.getY() ) < 15 || a.getY() >= HEIGHT - 90) {
+					//horde.removeAll();
+					//horde = null;
+					lost = true;
+					for (Alien b : horde.getAliens()) {
+						b.setAlive(false);
+					}
+					horde.removeDeadOnes();
+					
+				}
+			}
+		}
 		
-	/**	for (Alien a : horde.getAliens()) {
-	*		if (lCollide(a)) {
-	*			a.setAlive(false);
-	*		}
-	*		if (rCollide(a)) {
-	*			a.setAlive(false);
-	*		}
-	*		if (bCollide(a)) {
-	*			a.setAlive(false);
-	*		}
-	*	}
-	*/	
+		if (horde.size() == 0 && lost == true) {
+			graphToBack.setColor(Color.WHITE);
+			graphToBack.setFont(new Font("Helvetica", Font.PLAIN, 25));
+			graphToBack.drawString("You Lost", WIDTH/2 - 50, HEIGHT/2 - 50);
+		}
+		
+		if (horde.size() == 0 && lost == false) {
+			graphToBack.setColor(Color.WHITE);
+			graphToBack.setFont(new Font("Helvetica", Font.PLAIN, 25));
+			graphToBack.drawString("You Won!", WIDTH/2 - 50, HEIGHT/2 - 50);
+		}
+		
 		horde.removeDeadOnes();
-		
 		
 		
 		//if (bulletExist && shots.get(0).getX() < ) {
@@ -248,7 +270,7 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
    	{
    		while(true)
    		{
-   		   Thread.currentThread().sleep(5);
+   		   Thread.currentThread().sleep(15);
             repaint();
          }
       }catch(Exception e)
@@ -257,32 +279,6 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
   	}
    
    
-   public boolean lCollide(MovingThing n){
-		  if(shots.get(0).getX() + 2*shots.get(0).getSpeed() >= n.getX() && shots.get(0).getX() < n.getX() + n.getWidth() /2 && shots.get(0).getY() >= n.getY() && shots.get(0).getY() <=  n.getY() + n.getHeight())
-			return true;
-		  else
-			  return false;
-	  }
-	   
-	public boolean rCollide (MovingThing n){
-		 if(shots.get(0).getX() + 2*shots.get(0).getSpeed() <= n.getX() + n.getWidth() && shots.get(0).getX() >= n.getX() + n.getWidth()/2 && shots.get(0).getY() >= n.getY() && shots.get(0).getY() <=  n.getY() + n.getHeight())
-				return true;
-		   else
-			   return false;
-	   }
-	
-	public boolean tCollide(MovingThing n){
-		   if(shots.get(0).getY() + 2*shots.get(0).getSpeed() >= n.getY() && shots.get(0).getY() <= n.getY() + n.getHeight()/2 && shots.get(0).getX() >= n.getX() && shots.get(0).getX() <=  n.getX() + n.getWidth())
-				return true;
-		   else
-			   return false;
-	   }
-	   
-	 public boolean bCollide(MovingThing n){
-		   if(shots.get(0).getY() + 2*shots.get(0).getSpeed() <= n.getY() + n.getHeight() && shots.get(0).getY() >= n.getY() + n.getHeight()/2 && shots.get(0).getX() >= n.getX() && shots.get(0).getX() <=  n.getX() + n.getWidth())
-				return true;
-		   else
-			   return false;
-	   }
+   
 }
 

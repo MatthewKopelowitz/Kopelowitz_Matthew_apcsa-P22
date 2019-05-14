@@ -322,7 +322,7 @@ public class Pong2 extends Canvas implements KeyListener, Runnable
 		   return false;
    }
    
-   public boolean tCollide(Block n){
+   public boolean tColl0ide(Block n){
 	   if(ball.getY() + 2*ball.getYSpeed() >= n.getY() && ball.getY() <= n.getY() + n.getHeight()/2 && ball.getX() >= n.getX() && ball.getX() <=  n.getX() + n.getWidth())
 			return true;
 	   else

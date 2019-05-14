@@ -91,21 +91,21 @@ public class Ammo extends MovingThing
 	{
 		if (direction.equals("UP")) {
 			this.draw2(window, Color.BLACK);
-			this.setY(this.getY() - 3);
+			this.setY(this.getY() - this.speed);
 			this.draw2(window, Color.YELLOW);
 			
 		}
 		
 		if (direction.equals("DOWN")) {
-			setY(this.getY() + 1);
+			setY(this.getY() + this.speed);
 		}
 		
 		if (direction.equals("LEFT")) {
-			setX(this.getX() - 1);
+			setX(this.getX() - this.speed);
 		}
 		
 		if (direction.equals("RIGHT")) {
-			setX(this.getX() + 1);
+			setX(this.getX() + this.speed);
 		}
 	}
 	
