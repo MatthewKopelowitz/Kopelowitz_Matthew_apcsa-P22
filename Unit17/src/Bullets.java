@@ -35,7 +35,14 @@ public class Bullets
 	public int size() {
 		return ammo.size();
 	}
-
+	
+	public List<Ammo> getBullets() {
+		return ammo;
+	}
+	
+	public void remove(Ammo al) {
+		ammo.remove(al);
+	}
 	//post - draw each Ammo
 	public void drawEmAll( Graphics window )
 	{

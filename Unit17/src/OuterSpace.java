@@ -26,6 +26,8 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
 	private final int WIDTH;
 	private final int HEIGHT;
 	private boolean lost;
+	private boolean pressed;
+	private boolean loseflag;
 	
 
 	private boolean[] keys;
@@ -45,6 +47,7 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
 		horde = new AlienHorde();
 		direction = "RIGHT";
 		lost = false;
+		loseflag = false;
 		
 		//create aliens and add to horde
 		for (int i = 5; i < WIDTH; i += 100) {
@@ -121,6 +124,8 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
 			}
 		}
 		
+		
+/*		
 		//check if space bar has been pressed
 		if (bulletExist && shots.get(0).isVisible() == true && shots.get(0).getY() > 0) {
 			shots.get(0).move2("UP", graphToBack);
@@ -132,50 +137,82 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
 			shots.remove(0);
 			bulletExist = false;
 		}
+*/		
 		
-		//move ship
-		if(keys[0] == true)
-		{
-			ship.move("LEFT");
+		
+		
+		//bullet collision with aliens
+		if (bulletExist = true) {
+			for (Ammo b : shots.getList()) {
+				if (b.getY() <= 0) {
+					b.setVisible(false);
+					shots.remove(b);
+				}
+				if (b.isVisible() == true && b.getY() > 0) {
+					b.move2("UP", graphToBack);
+				}
+			}
 		}
 		
-		if(keys[1] == true)
-		{
-			ship.move("RIGHT");
-		}
 		
-		if(keys[2] == true)
-		{
-			ship.move("UP");
-		}
+		if (loseflag == false)
+			for (Alien a : horde.getAliens()) {
+				if (bulletExist == true) {
+					for (Ammo b : shots.getList()) {
+						if ((Math.abs( b.getX() - a.getX()) < 15 && Math.abs(b.getY() - a.getY() ) < 15)) { 
+							a.setAlive(false);
+							b.setVisible(false);
+							shots.remove(b);
+							horde.removeDeadOnes();
+						}
+					}
+				}
+				if (Math.abs(ship.getX() - a.getX()) < 15 && Math.abs(ship.getY() - a.getY()) < 15 || a.getY() >= 550) {
+					loseflag = true;
+					break;
+				}
+				
+			}
+			
+			if (horde.size() == 0 && loseflag == false) {
+				graphToBack.setColor(Color.WHITE);
+				graphToBack.setFont(new Font("Helvetica", Font.PLAIN, 25));
+				graphToBack.drawString("YOU WON",340,300);
+				graphToBack.setColor(Color.BLACK);
+			}
+			
+			if (loseflag == true) {
+				for (Alien b : horde.getAliens()) {
+					b.setAlive(false);
+				}
+				horde.removeDeadOnes();
+				graphToBack.setColor(Color.WHITE);
+				graphToBack.setFont(new Font("Helvetica", Font.PLAIN, 25));
+				graphToBack.drawString("YOU LOST",340,300);
+				graphToBack.setColor(Color.BLACK);
+			}
+			
+			if (shots.getList().size() > 0) {
+				bulletExist = true;
+			}
+			else {
+				bulletExist = false;
+			}
+	
 		
-		if(keys[3] == true)
-		{
-			ship.move("DOWN");
-		}
-		
-		//fire bullet
-		if(keys[4] == true)
-		{
-			bulletExist = true;
-			shots.add(new Ammo(ship.getX(), ship.getY()));
-			shots.get(0).setSpeed(10);
-			shots.get(0).setVisible(true);
-			shots.cleanEmUp2();
-		}
-		
-
-
+/*		
 		//collision detection
 		if (horde.size() != 0) {
 			for (Alien a : horde.getAliens()) {
-				if (bulletExist && Math.abs( shots.get(0).getX() - a.getX() ) < 15 && Math.abs( shots.get(0).getY() - a.getY() ) < 15) {
-					a.setAlive(false);
+				//check if bullet collides with aliens
+				for (Ammo b : shots.getBullets()) {
+					if (bulletExist && Math.abs( shots.get(0).getX() - a.getX() ) < 15 && Math.abs( shots.get(0).getY() - a.getY() ) < 15) {
+						a.setAlive(false);
+					}
 				}
-			
+				
+				//check if aliens collide with ship or aliens collide with bottom of the screen
 				if (Math.abs( ship.getX() - a.getX() ) < 15 && Math.abs( ship.getY() - a.getY() ) < 15 || a.getY() >= HEIGHT - 90) {
-					//horde.removeAll();
-					//horde = null;
 					lost = true;
 					for (Alien b : horde.getAliens()) {
 						b.setAlive(false);
@@ -199,14 +236,39 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
 		}
 		
 		horde.removeDeadOnes();
-		
-		
-		//if (bulletExist && shots.get(0).getX() < ) {
-			
-		//}
-		
-		
 
+	*/	
+		//move ship
+		if(keys[0] == true)
+		{
+			ship.move("LEFT");
+		}
+		
+		if(keys[1] == true)
+		{
+			ship.move("RIGHT");
+		}
+		
+		if(keys[2] == true)
+		{
+			ship.move("UP");
+		}
+		
+		if(keys[3] == true)
+		{
+			ship.move("DOWN");
+		}
+		
+		//fire bullet
+		if(keys[4] == true && pressed == true)
+		{
+			bulletExist = true;
+			shots.add(new Ammo(ship.getX(), ship.getY(), 10));
+			pressed = false;
+		}
+		
+		
+		
 
 		twoDGraph.drawImage(back, null, 0, 0);
 	}
@@ -230,8 +292,9 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
 		{
 			keys[3] = true;
 		}
-		if (e.getKeyCode() == KeyEvent.VK_SPACE)
+		if (e.getKeyCode() == KeyEvent.VK_SPACE && pressed == false)
 		{
+			pressed = true;
 			keys[4] = true;
 		}
 		repaint();
@@ -257,7 +320,9 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable
 		}
 		if (e.getKeyCode() == KeyEvent.VK_SPACE)
 		{
+			pressed = false;
 			keys[4] = false;
+			
 		}
 		repaint();
 	}

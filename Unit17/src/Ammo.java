@@ -16,7 +16,7 @@ public class Ammo extends MovingThing
 	public Ammo()
 	{
 		this(0,0,0);
-		visible = false;
+		visible = true;
 		speed = 1;
 	}
 
@@ -24,7 +24,7 @@ public class Ammo extends MovingThing
 	{
 		this.setX(x);
 		this.setY(y);
-		visible = false;
+		visible = true;
 		speed = 1;
 	}
 
@@ -33,7 +33,7 @@ public class Ammo extends MovingThing
 		this.setX(x);
 		this.setY(y);
 		speed = s;
-		visible = false;
+		visible = true;
 		
 	}
 	
