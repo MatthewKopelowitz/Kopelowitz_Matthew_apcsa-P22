@@ -226,7 +226,6 @@ public class PictureTester
 	
 	  
 	testEncodeDecode();
-	//testDecode();
 	 
     //testChromakey();
     //testEncodeAndDecode();
