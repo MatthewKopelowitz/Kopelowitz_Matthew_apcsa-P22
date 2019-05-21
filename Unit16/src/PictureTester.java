@@ -177,6 +177,25 @@ public class PictureTester
     swan.explore();
   }
   
+  
+  
+  
+  
+  /** Method to test encode decode */
+  public static void testEncodeDecode()
+  {
+    Picture beach = new Picture("H:\\APCS\\Units\\Unit16\\Unit16-Assignments-pixLab\\images\\beach.jpg");
+    Picture mes = new Picture("H:\\APCS\\Units\\Unit16\\Unit16-Assignments-pixLab\\images\\msg.jpg");
+    mes.explore();
+    beach.explore();
+    beach.encode(mes);
+    beach.explore();
+    beach.decode(mes);
+    beach.explore();
+  }
+  
+  
+  
   /** Main method for testing.  Every class can have a main
     * method in Java */
   public static void main(String[] args)
@@ -204,7 +223,11 @@ public class PictureTester
     //testCopy();
 	//testEdgeDetection();
     //testEdgeDetection2();
+	
 	  
+	testEncodeDecode();
+	//testDecode();
+	 
     //testChromakey();
     //testEncodeAndDecode();
     //testGetCountRedOverValue(250);

@@ -462,7 +462,161 @@ public class Picture extends SimplePicture
      }
    }
  }
-  
+ 
+ 
+ 
+ //***************************** ENCODE AND DECODE  *******************************************************************************//
+ 
+ public Boolean[][] createMatrix(Pixel[][] orig, Pixel[][] msg) {
+	 
+	 Boolean[][] matrix = new Boolean[msg.length][msg[0].length];
+	 
+	 for (int i = 0; i < msg.length; i++) {
+			for (int j = 0; j < msg[i].length;j++) {
+				if (msg[i][j].getRed() == 0 && msg[i][j].getBlue() == 0 && msg[i][j].getGreen() == 0) { 
+					matrix[i][j] = true;
+				}
+				else {
+					matrix[i][j] = false;
+				}
+			 }
+		 }
+	 return matrix;
+	 
+ }
+ 
+ public void encode(Picture msg) {
+	 
+	 Pixel[][] originalPixels = this.getPixels2D();
+	 Pixel[][] msgPixels = msg.getPixels2D();
+	 Boolean[][] msgLocations = new Boolean[msgPixels.length][msgPixels[0].length];
+	 
+	//generates a boolean matrix of message pixel locations
+	msgLocations = createMatrix(originalPixels, msgPixels);
+/*	 
+	 for (int i = 0; i < msgPixels.length; i++) {
+		for (int j = 0; j < msgPixels[i].length;j++) {
+			if (msgPixels[i][j].getRed() == 0 && msgPixels[i][j].getBlue() == 0 && msgPixels[i][j].getGreen() == 0) { 
+				msgLocations[i][j] = true;
+			}
+			else {
+				msgLocations[i][j] = false;
+			}
+		 }
+	 }
+*/	
+	for (int i = 1; i < originalPixels.length-1; i++) {
+		for (int j = 1; j < originalPixels[i].length-1; j++) {
+			if (msgLocations[i][j] == true) {
+				int leftRed = originalPixels[i][j-1].getRed();
+			   	int leftGreen = originalPixels[i][j-1].getGreen();
+			   	int leftBlue = originalPixels[i][j-1].getBlue();
+			   	int topRed = originalPixels[i-1][j].getRed();
+			   	int topGreen = originalPixels[i-1][j].getGreen();
+			   	int topBlue = originalPixels[i-1][j].getBlue();
+			   	int rightRed = originalPixels[i][j+1].getRed();
+			   	int rightGreen = originalPixels[i][j+1].getGreen();
+			   	int rightBlue = originalPixels[i][j+1].getBlue();
+			   	int bottomRed = originalPixels[i+1][j].getRed();
+			   	int bottomGreen = originalPixels[i+1][j].getGreen();
+			   	int bottomBlue = originalPixels[i+1][j].getBlue();
+	/*		   	
+			   	if (leftRed % 2 != 0) {
+			   		leftRed = leftRed - 1;
+			   	} else {
+			   		leftRed = leftRed + 1;
+			   	}
+			   	if (leftGreen % 2 != 0) {
+			   		leftGreen = leftGreen - 1;
+			   	} else {
+			   		leftGreen = leftGreen + 1;
+			   	}
+			   	if (leftBlue % 2 != 0) {
+			   		leftBlue = leftBlue - 1;
+			   	} else {
+			   		leftBlue = leftBlue + 1;
+			   	}
+			   	
+			   	if (rightRed % 2 != 0) {
+			   		rightRed = rightRed - 1;
+			   	} else {
+			   		rightRed = rightRed + 1;
+			   	}
+			   	if (rightGreen % 2 != 0) {
+			   		rightGreen = rightGreen - 1;
+			   	} else {
+			   		rightGreen = rightGreen + 1;
+			   	}
+			   	if (rightBlue % 2 != 0) {
+			   		rightBlue = rightBlue - 1;
+			   	} else {
+			   		rightBlue = rightBlue + 1;
+			   	}
+			   	
+			   	int newRed;
+			   	int newGreen;
+			   	int newBlue;
+			   	
+			   	if (leftRed > rightRed) {
+			   		newRed = leftRed;
+			   	} else {
+			   		newRed = rightRed;
+			   	}
+			   	
+			   	if (leftGreen > rightGreen) {
+			   		newGreen = leftGreen;
+			   	} else {
+			   		newGreen = rightGreen;
+			   	} 
+			   	
+			   	if (leftBlue > rightBlue) {
+			   		newBlue = leftBlue;
+			   	} else {
+			   		newBlue = rightBlue;
+			   	}
+*/			   	
+			   	
+			   	int redAverage = (leftRed + rightRed + topRed + bottomRed) / 4;
+			   	int greenAverage = (leftGreen + rightGreen + topGreen + bottomGreen) / 4;
+			   	int blueAverage = (leftBlue + rightBlue + topBlue + bottomBlue) / 4;
+			   	
+			   	originalPixels[i][j].setRed(redAverage);
+			   	originalPixels[i][j].setGreen(greenAverage);
+			   	originalPixels[i][j].setBlue(blueAverage);
+			   	
+			}
+		}
+	}
+	
+	 
+ }
+ 
+ 
+ public void decode(Picture msg) {
+	 
+	 Pixel[][] originalPixels = this.getPixels2D();
+	 Pixel[][] msgPixels = msg.getPixels2D();
+	 Boolean[][] msgLocations = new Boolean[msgPixels.length][msgPixels[0].length];
+	 
+	 msgLocations = createMatrix(originalPixels, msgPixels);
+	 
+	 for (int i = 0; i < msgLocations.length; i++) {
+		 for (int j = 0; j < msgLocations[0].length; j++) {
+			 if (msgLocations[i][j] == true) {
+				 originalPixels[i][j].setColor(Color.BLACK);
+			 } else {
+				 originalPixels[i][j].setColor(Color.WHITE);
+			 }
+		 }
+	 }
+
+	 	 
+	 
+	 
+	
+ }
+ 
+ 
   
   /* Main method for testing - each class in Java can have a main 
    * method 
