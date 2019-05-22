@@ -468,12 +468,11 @@ public class Picture extends SimplePicture
  //***************************** ENCODE AND DECODE  *******************************************************************************//
  
  public Boolean[][] createMatrix(Pixel[][] orig, Pixel[][] msg) {
-	 
 	 Boolean[][] matrix = new Boolean[msg.length][msg[0].length];
 	 
 	 for (int i = 0; i < msg.length; i++) {
 			for (int j = 0; j < msg[i].length;j++) {
-				if (msg[i][j].getRed() == 0 && msg[i][j].getBlue() == 0 && msg[i][j].getGreen() == 0) { 
+				if ((msg[i][j].colorDistance(Color.BLACK) < 50)) { 
 					matrix[i][j] = true;
 				}
 				else {
@@ -482,11 +481,9 @@ public class Picture extends SimplePicture
 			 }
 		 }
 	 return matrix;
-	 
  }
  
  public void encode(Picture msg) {
-	 
 	 Pixel[][] originalPixels = this.getPixels2D();
 	 Pixel[][] msgPixels = msg.getPixels2D();
 	 Boolean[][] msgLocations = new Boolean[msgPixels.length][msgPixels[0].length];
@@ -517,15 +514,12 @@ public class Picture extends SimplePicture
 			   	originalPixels[i][j].setRed(redAverage);
 			   	originalPixels[i][j].setGreen(greenAverage);
 			   	originalPixels[i][j].setBlue(blueAverage);
-			   	
 			}
 		}
 	}
-	
-	 
  }
  
- 
+
  public void decode(Picture msg) {
 	 
 	 Pixel[][] originalPixels = this.getPixels2D();
@@ -546,6 +540,37 @@ public class Picture extends SimplePicture
 
 	
  }
+
+// public void decode() {
+//	 Pixel[][] pixels = this.getPixels2D();
+//	 for (int i = 1; i < pixels.length-1; i++) {
+//		 for (int j = 1; j < pixels[0].length-1; j++) {
+//			 int leftRed = pixels[i][j-1].getRed();
+//			 int leftGreen = pixels[i][j-1].getGreen();
+//			 int leftBlue = pixels[i][j-1].getBlue();
+//			 int topRed = pixels[i-1][j].getRed();
+//			 int topGreen = pixels[i-1][j].getGreen();
+//			 int topBlue = pixels[i-1][j].getBlue();
+//			 int rightRed = pixels[i][j+1].getRed();
+//			 int rightGreen = pixels[i][j+1].getGreen();
+//			 int rightBlue = pixels[i][j+1].getBlue();
+//			 int bottomRed = pixels[i+1][j].getRed();
+//			 int bottomGreen = pixels[i+1][j].getGreen();
+//			 int bottomBlue = pixels[i+1][j].getBlue();
+//	
+//			 int redAverage = (leftRed + rightRed + topRed + bottomRed) / 4;
+//			 int greenAverage = (leftGreen + rightGreen + topGreen + bottomGreen) / 4;
+//			 int blueAverage = (leftBlue + rightBlue + topBlue + bottomBlue) / 4;
+//			 //&& pixels[i][j].getGreen() == greenAverage && pixels[i][j].getBlue() == blueAverage
+//			 if (Math.abs(pixels[i][j].getRed() - redAverage) > 10 && Math.abs(pixels[i][j].getGreen() - greenAverage) > 10 && Math.abs(pixels[i][j].getBlue() - blueAverage) > 10) {
+//				 System.out.print("works");
+//				 pixels[i][j].setColor(Color.BLACK);
+//			 } else {
+//				 pixels[i][j].setColor(Color.WHITE);
+//			 }
+//		 }
+//	 }
+// }
  
  
   
